@@ -7,7 +7,7 @@
 #include <vector>
 
 // 定义数独棋盘数据结构
-typedef std::vector<std::vector<int>> SudokuBoard;
+typedef std::array<std::array<int, 9>, 9> SudokuBoard;
 // 打印数独棋盘
 void printSudokuBoard(const SudokuBoard &board);
 // 从文件中读取数独棋盘
@@ -18,8 +18,6 @@ void writeSudokuBoardToFile(const std::string &filename, const std::vector<Sudok
 std::vector<SudokuBoard> generateGameSudoku(int count, int mode, std::pair<int, int> range, bool unique);
 // 解决数独游戏
 SudokuBoard solveSudoku(SudokuBoard board);
-// 生成基础数独终局
-SudokuBoard generateBaseSudokuBoard();
 // 根据基础数独终局生成所有不重复的数独终局
 std::vector<SudokuBoard> generateAllSudokuBoards(int numSolutions);
 // 生成数独游戏

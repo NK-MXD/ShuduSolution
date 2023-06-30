@@ -104,65 +104,63 @@ SudokuBoard solveSudoku(SudokuBoard board)
     return res;
 }
 
-// 生成基础数独终局
-SudokuBoard generateBaseSudokuBoard()
-{
-    SudokuBoard board(N, std::vector<int>(N, 0));
-    // 随机数引擎
-    std::random_device rd;
-    std::mt19937 gen(rd());
-
-    // 填充主对角线
-    for (int i = 0; i < 9; i += 3)
-    {
-        std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-        std::shuffle(nums.begin(), nums.end(), gen);
-
-        for (int j = 0; j < 3; ++j)
-        {
-            board[i + j][i + j] = nums[j];
-        }
-    }
-
-    // 使用回溯算法生成数独终局
-    board = solveSudoku(board);
-    return board;
-}
-
 // 根据基础数独终局生成所有不重复的数独终局
 std::vector<SudokuBoard> generateAllSudokuBoards(int numSolutions)
 {
     // 初始化数独棋盘，所有单元格都为0
-    SudokuBoard board = generateBaseSudokuBoard();
+    SudokuBoard board;
     std::vector<SudokuBoard> allBoards;
-    allBoards.push_back(board);
-
-    // 随机行列交换
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 2);
-
-    // 生成变换后的数独终局
-    while (allBoards.size() < numSolutions)
+    int n = numSolutions;
+    // 填充第一行
+    int nums[9] = {5, 2, 3, 4, 6, 7, 8, 9};
+    // 每一行移动的位数
+    int shift[9] = {0, 3, 6, 1, 4, 7, 2, 5, 8};
+    int pos1[6][3] = {{3, 4, 5}, {3, 5, 4}, {4, 5, 3}, {4, 3, 5}, {5, 4, 3}, {5, 3, 4}};
+    int pos2[6][3] = {{6, 7, 8}, {6, 8, 7}, {7, 6, 8}, {7, 8, 6}, {8, 6, 7}, {8, 7, 6}};
+    do
     {
-        SudokuBoard newBoard = allBoards[0]; // 使用第一个数独终局作为基础
-        // 随机交换行
-        int rowGroup1 = dis(gen) * 3;
-        int rowGroup2 = dis(gen) * 3;
-        std::swap(newBoard[rowGroup1], newBoard[rowGroup2]);
-
-        // 随机交换列
-        int colGroup1 = dis(gen) * 3;
-        int colGroup2 = dis(gen) * 3;
-        for (int i = 0; i < 9; ++i)
+        // 基础终局生成
+        for (int i = 0; i < 9; i++)
         {
-            std::swap(newBoard[i][colGroup1], newBoard[i][colGroup2]);
+            for (int j = 0; j < 9; j++)
+            {
+                board[i][j] = nums[(j + shift[i]) % 9];
+            }
         }
 
-        // 将数独终局添加到结果中
-        allBoards.push_back(newBoard);
-    }
+        // 前3行保持不变
+        SudokuBoard new_board;
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 9; j++)
+            {
+                new_board[i][j] = board[i][j];
+            }
+        }
 
+        for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++)
+            {
+                // 4~6行变换, 7~9行变换
+                for (int k = 0; k < 3; k++)
+                {
+                    for (int p = 0; p < 9; p++)
+                    {
+                        new_board[k + 3][p] = board[pos1[i][k]][p];
+                        new_board[k + 6][p] = board[pos2[j][k]][p];
+                    }
+                }
+
+                allBoards.emplace_back(new_board);
+                n--;
+                if (n == 0)
+                {
+                    return allBoards;
+                }
+            }
+        }
+    } while (std::next_permutation(nums + 1, nums + 9));
     return allBoards;
 }
 
@@ -277,7 +275,6 @@ SudokuBoard digBoard(SudokuBoard finalBoard, int digNum)
             b_i += 3;
         }
     }
-
     // 挖剩下的空
     digNum -= 18;
     while (digNum > 0)
@@ -317,10 +314,8 @@ SudokuBoard generateGameSudokuImpl(const SudokuBoard &finalBoard, int mode, std:
         int num[3] = {(range.second - range.first + 1) / 3, (range.second - range.first + 1) / 3 + 1, (range.second - range.first + 1) / 3 + 1};
         digNum = range.first + (mode - 1) * num[0] + dist(gen) % num[mode - 1];
     }
-
     // 生成唯一解/多解的游戏
     SudokuBoard gameBoard = digBoard(finalBoard, digNum);
-    ;
 
     if (!unique)
     {

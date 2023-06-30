@@ -190,8 +190,8 @@ int main(int argc, char *argv[])
         std::vector<SudokuBoard> boards = readSudokuBoardFromFile(filename);
         for (SudokuBoard &board : boards)
         {
-            solveSudoku(board);
-            std::cout << "求解结果：" << std::endl;
+            board = solveSudoku(board);
+            std::cout << "the result: " << std::endl;
             printSudokuBoard(board);
         }
         writeSudokuBoardToFile("solveBoard.txt", boards);
