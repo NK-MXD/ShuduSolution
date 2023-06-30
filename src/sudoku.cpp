@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
-#include "sudoku.h"
+#include "../include/sudoku.h"
 
 const int N = 9;
 int resCount = 0;

@@ -26,6 +26,9 @@ DEPS := $(OBJECTS:.o=.d)
 
 # 定义测试文件夹路径和测试命令
 TESTDIR = test
+TESTINVALUDCMD = $(BINDIR)/$(EXECUTABLE) -d -e
+TESTGENFINALCMD = $(BINDIR)/$(EXECUTABLE) -c
+TESTGENFINALCMD = $(BINDIR)/$(EXECUTABLE) -c
 TESTCMD = $(BINDIR)/$(EXECUTABLE) -s
 
 # 获取test文件夹下的所有文件
