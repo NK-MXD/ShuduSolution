@@ -57,7 +57,6 @@ bool isSafe(SudokuBoard board, int row, int col, int num)
 // 求解所有解的个数
 void solveSudoku(int i, int j, SudokuBoard &board, int solutionCount)
 {
-    std::cout << i << " " << j << std::endl;
     if (j == 9)
     {
         i++;
@@ -335,16 +334,12 @@ SudokuBoard generateGameSudokuImpl(const SudokuBoard &finalBoard, int mode, std:
         {
             resCount = 0;
             res = gameBoard;
-            printSudokuBoard(res);
             solveSudoku(0, 0, res, 2);
-            std::cout << "Before" << std::endl;
-            std::cout << resCount << std::endl;
 
             if (resCount == 1)
                 return gameBoard;
             // 非唯一解，重新生成
             gameBoard = digBoard(finalBoard, digNum);
-            printSudokuBoard(gameBoard);
         }
     }
 }
