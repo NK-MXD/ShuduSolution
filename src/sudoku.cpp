@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+#include <cassert>
 #include "../include/sudoku.h"
 
 const int N = 9;
@@ -97,6 +98,8 @@ void solveSudoku(int i, int j, SudokuBoard &board, int solutionCount)
 // 只生成一个结果
 SudokuBoard solveSudoku(SudokuBoard board)
 {
+    assert(board.size() == 9 ? true : (std::cout << "invalid length\n", false));
+    assert(board[0].size() == 9 ? true : (std::cout << "invalid length\n", false));
     resCount = 0;
     SudokuBoard res;
     res = board;
@@ -227,9 +230,12 @@ std::vector<SudokuBoard> readSudokuBoardFromFile(const std::string &filename)
             {
                 char v{};
                 linein >> v;
+                if(!v){
+                    throw std::runtime_error("invalid length error!");
+                }
                 if (!(v >= '1' && v <= '9' || v == '$'))
                 {
-                    throw std::runtime_error("File format error!");
+                    throw std::runtime_error("invalid character error!");
                 }
                 if (v == '$')
                 {
@@ -238,9 +244,14 @@ std::vector<SudokuBoard> readSudokuBoardFromFile(const std::string &filename)
                 board[i][j] = v - '0';
             }
         }
+        char k{};
+        linein >> k;
+        if(k){
+            throw std::runtime_error("invalid length error!");
+        }
         boards.emplace_back(board);
     }
-
+    
     file.close();
     return boards;
 }
