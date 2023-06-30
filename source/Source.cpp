@@ -8,21 +8,21 @@ const int N = 9;
 const int EMPTY = 0;
 
 bool isSafe(int grid[N][N], int row, int col, int num) {
-    // ¼ì²éĞĞÖĞÊÇ·ñ´æÔÚÏàÍ¬Êı×Ö
+    // æ£€æŸ¥è¡Œä¸­æ˜¯å¦å­˜åœ¨ç›¸åŒæ•°å­—
     for (int i = 0; i < N; i++) {
         if (grid[row][i] == num) {
             return false;
         }
     }
 
-    // ¼ì²éÁĞÖĞÊÇ·ñ´æÔÚÏàÍ¬Êı×Ö
+    // æ£€æŸ¥åˆ—ä¸­æ˜¯å¦å­˜åœ¨ç›¸åŒæ•°å­—
     for (int i = 0; i < N; i++) {
         if (grid[i][col] == num) {
             return false;
         }
     }
 
-    // ¼ì²é3x3·½¸ñÖĞÊÇ·ñ´æÔÚÏàÍ¬Êı×Ö
+    // æ£€æŸ¥3x3æ–¹æ ¼ä¸­æ˜¯å¦å­˜åœ¨ç›¸åŒæ•°å­—
     int startRow = row - row % 3;
     int startCol = col - col % 3;
     for (int i = 0; i < 3; i++) {
@@ -40,7 +40,7 @@ bool solveSudoku(int grid[N][N]) {
     int row, col;
     bool isEmpty = false;
 
-    // ²éÕÒÎ´Ìî³äµÄÎ»ÖÃ
+    // æŸ¥æ‰¾æœªå¡«å……çš„ä½ç½®
     for (row = 0; row < N; row++) {
         for (col = 0; col < N; col++) {
             if (grid[row][col] == EMPTY) {
@@ -53,22 +53,22 @@ bool solveSudoku(int grid[N][N]) {
         }
     }
 
-    // ËùÓĞÎ»ÖÃ¶¼ÒÑÌî³ä£¬Êı¶ÀÒÑ½â¾ö
+    // æ‰€æœ‰ä½ç½®éƒ½å·²å¡«å……ï¼Œæ•°ç‹¬å·²è§£å†³
     if (!isEmpty) {
         return true;
     }
 
-    // ³¢ÊÔÌî³äÊı×Ö
+    // å°è¯•å¡«å……æ•°å­—
     for (int num = 1; num <= N; num++) {
         if (isSafe(grid, row, col, num)) {
             grid[row][col] = num;
 
-            // µİ¹é½â¾öÊ£ÓàµÄÊı¶À
+            // é€’å½’è§£å†³å‰©ä½™çš„æ•°ç‹¬
             if (solveSudoku(grid)) {
                 return true;
             }
 
-            // »ØËİ
+            // å›æº¯
             grid[row][col] = EMPTY;
         }
     }
@@ -81,11 +81,11 @@ void generateSudoku(int grid[N][N]) {
     std::mt19937 gen(rd());
     std::uniform_int_distribution<> dis(1, N);
 
-    // Éú³ÉÍêÕûµÄÊı¶ÀÖÕ¾Ö
+    // ç”Ÿæˆå®Œæ•´çš„æ•°ç‹¬ç»ˆå±€
     solveSudoku(grid);
 
-    // Ëæ»úÒÆ³ı²¿·ÖÊı×Ö
-    int count = N * N - 1; // ĞèÒªÒÆ³ıµÄÊı×ÖÊıÁ¿
+    // éšæœºç§»é™¤éƒ¨åˆ†æ•°å­—
+    int count = N * N - 1; // éœ€è¦ç§»é™¤çš„æ•°å­—æ•°é‡
     while (count > 0) {
         int row = dis(gen) - 1;
         int col = dis(gen) - 1;
@@ -106,16 +106,16 @@ void saveSudokuToFile(int grid[N][N], const std::string& filename) {
             file << std::endl;
         }
         file.close();
-        std::cout << "Êı¶ÀÖÕ¾ÖÒÑ±£´æµ½ÎÄ¼ş£º" << filename << std::endl;
+        std::cout << "æ•°ç‹¬ç»ˆå±€å·²ä¿å­˜åˆ°æ–‡ä»¶ï¼š" << filename << std::endl;
     }
     else {
-        std::cout << "ÎŞ·¨´ò¿ªÎÄ¼ş£º" << filename << std::endl;
+        std::cout << "æ— æ³•æ‰“å¼€æ–‡ä»¶ï¼š" << filename << std::endl;
     }
 }
 
 int main(int argc, char* argv[]) {
     if (argc == 3 && std::string(argv[1]) == "-c") {
-        // Éú³ÉÊı¶ÀÖÕ¾Ö²¢±£´æµ½ÎÄ¼ş
+        // ç”Ÿæˆæ•°ç‹¬ç»ˆå±€å¹¶ä¿å­˜åˆ°æ–‡ä»¶
         int numGames = std::stoi(argv[2]);
         for (int i = 1; i <= numGames; i++) {
             int grid[N][N] = { 0 };
@@ -125,7 +125,7 @@ int main(int argc, char* argv[]) {
         }
     }
     else if (argc == 3 && std::string(argv[1]) == "-s") {
-        // ´ÓÎÄ¼şÖĞ¶ÁÈ¡Êı¶ÀÎÊÌâ²¢Çó½â
+        // ä»æ–‡ä»¶ä¸­è¯»å–æ•°ç‹¬é—®é¢˜å¹¶æ±‚è§£
         std::string filename = argv[2];
         std::ifstream file(filename);
         if (file.is_open()) {
@@ -137,11 +137,11 @@ int main(int argc, char* argv[]) {
             }
             file.close();
 
-            std::cout << "¶ÁÈ¡Êı¶ÀÎÊÌâ£º" << filename << std::endl;
-            std::cout << "Çó½âÖĞ..." << std::endl;
+            std::cout << "è¯»å–æ•°ç‹¬é—®é¢˜ï¼š" << filename << std::endl;
+            std::cout << "æ±‚è§£ä¸­..." << std::endl;
 
             if (solveSudoku(grid)) {
-                std::cout << "Êı¶ÀÎÊÌâÒÑ½â¾ö£º" << std::endl;
+                std::cout << "æ•°ç‹¬é—®é¢˜å·²è§£å†³ï¼š" << std::endl;
                 for (int row = 0; row < N; row++) {
                     for (int col = 0; col < N; col++) {
                         std::cout << grid[row][col] << " ";
@@ -150,15 +150,15 @@ int main(int argc, char* argv[]) {
                 }
             }
             else {
-                std::cout << "ÎŞ½â" << std::endl;
+                std::cout << "æ— è§£" << std::endl;
             }
         }
         else {
-            std::cout << "ÎŞ·¨´ò¿ªÎÄ¼ş£º" << filename << std::endl;
+            std::cout << "æ— æ³•æ‰“å¼€æ–‡ä»¶ï¼š" << filename << std::endl;
         }
     }
     else {
-        std::cout << "ÎŞĞ§µÄÃüÁîĞĞ²ÎÊı" << std::endl;
+        std::cout << "æ— æ•ˆçš„å‘½ä»¤è¡Œå‚æ•°" << std::endl;
     }
 
     return 0;
