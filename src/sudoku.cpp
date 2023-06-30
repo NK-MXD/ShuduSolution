@@ -112,7 +112,7 @@ std::vector<SudokuBoard> generateAllSudokuBoards(int numSolutions)
     std::vector<SudokuBoard> allBoards;
     int n = numSolutions;
     // 填充第一行
-    int nums[9] = {5, 2, 3, 4, 6, 7, 8, 9};
+    int nums[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     // 每一行移动的位数
     int shift[9] = {0, 3, 6, 1, 4, 7, 2, 5, 8};
     int pos1[6][3] = {{3, 4, 5}, {3, 5, 4}, {4, 5, 3}, {4, 3, 5}, {5, 4, 3}, {5, 3, 4}};
