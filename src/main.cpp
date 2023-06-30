@@ -131,7 +131,8 @@ int main(int argc, char *argv[])
                     return 1;
                 }
                 std::smatch m;
-                if (!std::regex_match(std::string(optarg), m, std::regex(R"(^(\d+)~(\d+)$)")))
+                std::string s(optarg);
+                if (!std::regex_match(s, m, std::regex(R"(^(\d+)~(\d+)$)")))
                 {
                     std::cout << "Fomat error, just like 20~55" << std::endl;
                     return 1;
