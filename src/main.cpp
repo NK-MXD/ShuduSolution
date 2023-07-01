@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 #include <regex>
-#include "sudoku.h"
+#include "../include/sudoku.h"
 extern int optind, opterr, optopt;
 extern char *optargi;
 // 定义长选项

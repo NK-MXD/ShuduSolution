@@ -1,7 +1,9 @@
 # 设置编译器
 CC = g++
 # 设置编译选项
-CFLAGS = -std=c++11 -Wall -Wextra -O2
+CFLAGS = -std=c++11 -Wall -Wextra -O2 -fprofile-arcs -ftest-coverage 
+# 设置链接选项
+LDFLAGS = -lgcov
 # 源文件目录
 SRCDIR := src
 # 头文件目录
@@ -40,12 +42,12 @@ TESTBADFILES := $(wildcard $(TESTBADDIR)/*)
 # 生成可执行文件
 $(BINDIR)/$(EXECUTABLE): $(OBJECTS)
 	@mkdir -p $(BINDIR)
-	@$(CXX) $(CXXFLAGS) -o $@ $^
+	@$(CXX) $(CFLAGS) -o $@ $^
 
 # 生成目标文件
 $(BINDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
-	@$(CXX) $(CXXFLAGS) -I$(INCDIR) -MMD -c -o $@ $<
+	@$(CXX) $(CFLAGS) -I$(INCDIR) $(LDFLAGS) -MMD -c -o $@ $<
 
 $(BINDIR)/unittest:
 	@g++ $(TESTDIR)/test.cpp $(SRCDIR)/sudoku.cpp -lgtest -lpthread -o $(BINDIR)/unittest
@@ -92,4 +94,4 @@ test-solve-bad:$(BINDIR)/$(EXECUTABLE)
 clean:
 	@rm -f $(BINDIR)/*
 	@rm -f ./*.txt
-
+	@rm -f ./*.info
